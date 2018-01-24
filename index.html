@@ -9,15 +9,42 @@
 	<h2>app1</h2>
 	<div id="app1">
 		{{ message }}
+
+		<table>
+			<tr>
+				<th  v-for="column in columns">{{ column }}</th>
+			</tr>
+			<tr v-for="item in data">
+				<td v-for="val in item">{{ val }}</td>
+			</tr>
+		</table>
 	</div>
 
 	<script>
-	var app1 = new Vue({
-		el: '#app1',
-		data: {
-			message: 'Hello Vue!'
-		}
-	});
+
+var data = [
+	{id: 'id1', name:'name1', tag:'tag1'},
+	{id: 'id2', name:'name2', tag:'tag2'},
+	{id: 'id3', name:'name3', tag:'tag3'},
+	{id: 'id4', name:'name4', tag:'tag4'},
+	{id: 'id5', name:'name5', tag:'tag5'},
+];
+
+var app1 = new Vue({
+	el: '#app1',
+	data: {
+		message: 'Hello Vue!',
+		columns: [],
+		data: data
+	},
+	created: function() {
+		var columns = [];
+		Object.keys(this.data[0]).forEach(function(key){
+			columns.push(key);
+		});
+		this.columns = columns;
+	}
+});
 	</script>
 </body>
 </html>
