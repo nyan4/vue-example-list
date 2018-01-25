@@ -9,19 +9,31 @@
 	<h2>app1</h2>
 	<div id="app1">
 		{{ message }}
+		<div>id</div>
+		<label v-for="(item,key) in show">
+			<input class="toggle" type="checkbox" v-model="item.isActive">{{key}}
+		</label>
+
+		<div>name</div>
+
+		<div>tag</div>
 
 		<table>
 			<tr>
 				<th v-for="column in columns" @click="sort(column)">{{ column }}</th>
 			</tr>
 			<tr v-for="item in newdata">
-				<td v-for="val in item">{{ val }}</td>
+				<td v-for="val in item" v-show="show[item.id].isActive">
+					{{ val }}
+				</td>
 			</tr>
 		</table>
 	</div>
 
-	<script>
+	<style type="text/css">
+	</style>
 
+	<script>
 var data = [
 	{id: 'id1', name:'name1', tag:'tag1'},
 	{id: 'id2', name:'name2', tag:'tag2'},
@@ -34,6 +46,7 @@ var app1 = new Vue({
 	el: '#app1',
 	data: {
 		message: 'Hello Vue!',
+		show: {},
 		sortkey: "",
 		sortorders: {},
 		columns: [],
@@ -50,6 +63,12 @@ var app1 = new Vue({
 			sortorders[key] = 1;
 		});
 		this.sortorders = sortorders;
+
+		var show = {};
+		this.data.forEach(function(value,index,array){
+			show[value.id] = {isActive:true};
+		});
+		this.show = show;
 	},
 	computed: {
 		newdata: function() {
