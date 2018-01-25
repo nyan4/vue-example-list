@@ -12,7 +12,7 @@
 
 		<table>
 			<tr>
-				<th  v-for="column in columns">{{ column }}</th>
+				<th v-for="column in columns" @click="sort(column)">{{ column }}</th>
 			</tr>
 			<tr v-for="item in data">
 				<td v-for="val in item">{{ val }}</td>
@@ -43,6 +43,11 @@ var app1 = new Vue({
 			columns.push(key);
 		});
 		this.columns = columns;
+	},
+	methods: {
+		sort: function(key) {
+			console.log(key);
+		}
 	}
 });
 	</script>
