@@ -14,7 +14,7 @@
 			<tr>
 				<th v-for="column in columns" @click="sort(column)">{{ column }}</th>
 			</tr>
-			<tr v-for="item in data">
+			<tr v-for="item in newdata">
 				<td v-for="val in item">{{ val }}</td>
 			</tr>
 		</table>
@@ -34,6 +34,8 @@ var app1 = new Vue({
 	el: '#app1',
 	data: {
 		message: 'Hello Vue!',
+		sortkey: "",
+		sortorders: {},
 		columns: [],
 		data: data
 	},
@@ -43,10 +45,32 @@ var app1 = new Vue({
 			columns.push(key);
 		});
 		this.columns = columns;
+		var sortorders = {}
+		columns.forEach(function(key) {
+			sortorders[key] = 1;
+		});
+		this.sortorders = sortorders;
+	},
+	computed: {
+		newdata: function() {
+			var key = this.sortkey;
+			var data = this.data;
+			var order = this.sortorders[key];
+			if(key){
+				data = data.slice().sort(function (a, b) {
+					a = a[key];
+					b = b[key];
+					return (a === b ? 0 : a > b ? 1 : -1) * order;
+				});
+			}
+			return data;
+		}
 	},
 	methods: {
 		sort: function(key) {
 			console.log(key);
+			this.sortkey = key;
+			this.sortorders[key] *= -1;
 		}
 	}
 });
